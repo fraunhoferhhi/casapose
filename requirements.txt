@@ -1,0 +1,9 @@
+tensorflow==2.9.1
+tensorflow-addons==0.17.0
+opencv-python==4.5.5.62
+trimesh==3.9.15
+pyrender==0.1.39
+imgaug==0.4.0
+pyyaml==6.0
+wget==3.2
+numpy==1.23.1

@@ -1,0 +1,17 @@
+{
+  "obj_000001": {"diameter": 10.0, "min_x": -10.0, "min_y": -10.0, "min_z": -10.0, "size_x": 10.0, "size_y": 10.0, "size_z": 10.0},
+  "obj_000002": {"diameter": 257.407, "min_x": -76.1551, "min_y": -109.525, "min_z": -120.202, "size_x": 152.31, "size_y": 219.051, "size_z": 240.404},
+  "obj_000003": {"diameter": 10.0, "min_x": -10.0, "min_y": -10.0, "min_z": -10.0, "size_x": 10.0, "size_y": 10.0, "size_z": 10.0},
+  "obj_000004": {"diameter": 10.0, "min_x": -10.0, "min_y": -10.0, "min_z": -10.0, "size_x": 10.0, "size_y": 10.0, "size_z": 10.0},
+  "obj_000005": {"diameter": 10.0, "min_x": -10.0, "min_y": -10.0, "min_z": -10.0, "size_x": 10.0, "size_y": 10.0, "size_z": 10.0},
+  "obj_000006": {"diameter": 10.0, "min_x": -10.0, "min_y": -10.0, "min_z": -10.0, "size_x": 10.0, "size_y": 10.0, "size_z": 10.0},
+  "obj_000007": {"diameter": 10.0, "min_x": -10.0, "min_y": -10.0, "min_z": -10.0, "size_x": 10.0, "size_y": 10.0, "size_z": 10.0},
+  "obj_000008": {"diameter": 263.718, "min_x": -42.8227, "min_y": -115.901, "min_z": -103.566, "size_x": 85.6455, "size_y": 231.803, "size_z": 207.131},
+  "obj_000009": {"diameter": 10.0, "min_x": -10.0, "min_y": -10.0, "min_z": -10.0, "size_x": 10.0, "size_y": 10.0, "size_z": 10.0},
+  "obj_000010": {"diameter": 10.0, "min_x": -10.0, "min_y": -10.0, "min_z": -10.0, "size_x": 10.0, "size_y": 10.0, "size_z": 10.0},
+  "obj_000011": {"diameter": 10.0, "min_x": -10.0, "min_y": -10.0, "min_z": -10.0, "size_x": 10.0, "size_y": 10.0, "size_z": 10.0},
+  "obj_000012": {"diameter": 10.0, "min_x": -10.0, "min_y": -10.0, "min_z": -10.0, "size_x": 10.0, "size_y": 10.0, "size_z": 10.0},
+  "obj_000013": {"diameter": 10.0, "min_x": -10.0, "min_y": -10.0, "min_z": -10.0, "size_x": 10.0, "size_y": 10.0, "size_z": 10.0},
+  "obj_000014": {"diameter": 10.0, "min_x": -10.0, "min_y": -10.0, "min_z": -10.0, "size_x": 10.0, "size_y": 10.0, "size_z": 10.0},
+  "obj_000015": {"diameter": 212.603, "min_x": -46.166, "min_y": -73.2117, "min_z": -92.0254, "size_x": 92.332, "size_y": 146.423, "size_z": 184.051}
+}
