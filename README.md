@@ -1,6 +1,6 @@
 # CASAPose: Class-Adaptive and Semantic-Aware Multi-Object Pose Estimation (BMVC 2022)
 
-## [Project Page](https://bmvc2022.mpi-inf.mpg.de/899/) &nbsp;|&nbsp; [Paper](https://iphome.hhi.de/gard/papers/bmvc2022_gard_hilsmann_eisert.pdf)
+## [Project Page](https://bmvc2022.mpi-inf.mpg.de/899/) &nbsp;|&nbsp; [Paper](https://iphome.hhi.de/gard/papers/bmvc2022_gard_hilsmann_eisert.pdf) &nbsp;|&nbsp; [Video](https://youtu.be/MXn34Ye2T5k)
 
 ![alt text](data/images/teaser.jpg)
 
