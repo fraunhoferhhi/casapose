@@ -6,6 +6,8 @@
 
 Official code for the BMVC 2022 paper "[Class-Adaptive and Semantic-Aware Multi-Object Pose Estimation](https://iphome.hhi.de/gard/papers/bmvc2022_gard_hilsmann_eisert.pdf)".
 
+# Setup and Configuration
+
 ## Installation
 
 ### Step 1: Setup Conda environment
@@ -95,16 +97,16 @@ python train_casapose.py -c config/config_8.ini \
 
 Use the `config_8.ini` file to chage other parameters (batchsize, gpus etc.)
 
-## Custom Dataset Generation
+# Custom Dataset Generation
 
 This code uses input data in the form of [NNDS](https://github.com/NVIDIA/Dataset_Synthesizer).
 Datasets created with [BlenderProc](https://github.com/DLR-RM/BlenderProc) can be converted to a usable format analogous to the examples in "util_scripts/dataset_converter.py".
 
-An explanation how to create compatible datasets with BlenderProc can be found [here](<https://github.com/DLR-RM/BlenderProc/blob/3f40e88b72f272a1d3159849e651d690521f2aae/examples/datasets/bop_challenge/README.mdd>).
+An explanation how to create compatible datasets with BlenderProc can be found [here](https://github.com/DLR-RM/BlenderProc/blob/3f40e88b72f272a1d3159849e651d690521f2aae/examples/datasets/bop_challenge/README.md).
 
 For customized datasets, only one instance should be visible per object per image.
 
-## Further Information
+# Further Information
 
 This directory contains some features that go beyond the experiments in the paper, but did not provide improved results in initial tests.
 
@@ -113,7 +115,11 @@ This directory contains some features that go beyond the experiments in the pape
 * Convolution parameter sharing between the two decoders.
 * The names of different example architecures can be found in `casapose.pose_models.model_factory` and can be used with the `--modelname` parameter. The easiest way to create a custom configuration is to change `CASAPOSE_PARAMS` in `casapose.pose_models.models.casapose`.
 
-## Citation
+# News
+
+* 02/05/2023 - Thanks to [Casey Hsiung](https://github.com/hsiungc), [Daniele Grandi](https://github.com/grndnl), [Evan Fjeld](https://github.com/EvanFjeld), [Mon Young](https://github.com/mon203) and [Preethi Raju](https://github.com/preethir903) for using CASAPose in their `W251 Spring 2023 Final Project` at `University of California, Berkeley`. All their materials and results can be found [here](https://github.com/mon203/w251_final_project/tree/main).
+
+# Citation
 
 If you find this code or our method useful for your academic research, please cite our paper
 
