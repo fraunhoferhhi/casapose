@@ -13,7 +13,7 @@ from zipfile import ZipFile
 
 from dataset_converter import generate_data
 
-BASE_URL = r"https://bop.felk.cvut.cz/media/data/bop_datasets/"
+BASE_URL = r"https://huggingface.co/datasets/bop-benchmark/datasets/resolve/main/"
 
 
 def copyanything(src, dst):
@@ -69,14 +69,14 @@ if os.path.exists(hb_path) and args.gen_hb:
 if not os.name == "nt":
     os.environ["PYOPENGL_PLATFORM"] = "egl"
 
-download_filenames = {"lm": ["lm_base.zip", "lm_models.zip"]}
+download_filenames = {"lm": ["lm/lm_base.zip", "lm/lm_models.zip"]}
 
 if args.gen_hb:
     download_filenames["hb"] = [
-        "hb_base.zip",
-        "hb_models.zip",
-        "hb_val_primesense.zip",  # 000002
-        "hb_val_kinect.zip",  # 000002
+        "hb/hb_base.zip",
+        "hb/hb_models.zip",
+        "hb/hb_val_primesense.zip",  # 000002
+        "hb/hb_val_kinect.zip",  # 000002
     ]
     hb_models = {
         "obj_000002.ply": "obj_000002.ply",
@@ -85,17 +85,17 @@ if args.gen_hb:
     }
 
 if args.gen_lmo:
-    download_filenames["lmo"] = ["lmo_base.zip", "lmo_test_all.zip"]
+    download_filenames["lmo"] = ["lmo/lmo_base.zip", "lmo/lmo_test_all.zip"]
     if args.gen_bop:
-        download_filenames["lmo"].append("lmo_test_bop19.zip")
+        download_filenames["lmo"].append("lmo/lmo_test_bop19.zip")
 
 if args.gen_lm:
     if args.gen_bop:
-        download_filenames["lm"].append("lm_test_bop19.zip")
-    download_filenames["lm"].append("lm_test_all.zip")
+        download_filenames["lm"].append("lm/lm_test_bop19.zip")
+    download_filenames["lm"].append("lm/lm_test_all.zip")
 
 if args.gen_train:
-    download_filenames["lm"].append("lm_train_pbr.zip")
+    download_filenames["lm"].append("lm/lm_train_pbr.zip")
 
 
 if not os.path.exists(os.path.join(tmp_path)):
@@ -119,7 +119,8 @@ for dataset in download_filenames:
             wget.download(BASE_URL + filename, out=tmp_path)
 # unzip
 for dataset in download_filenames:
-    for idx, filename in enumerate(download_filenames[dataset]):
+    for idx, filename_ in enumerate(download_filenames[dataset]):
+        filename = os.path.basename(filename_)
         tmp_dataset_path = tmp_path
         if idx != 0:
             tmp_dataset_path = os.path.join(tmp_path, dataset)
