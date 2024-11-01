@@ -18,4 +18,4 @@ if not os.path.exists(LMO_MODEL_PATH_OUT):
     wget.download(LMO_MODEL_PATH, out=LMO_MODEL_PATH_OUT)
 
 if not os.path.exists(LM_MODEL_PATH_OUT):
-    wget.download(LMO_MODEL_PATH, out=LM_MODEL_PATH_OUT)
+    wget.download(LM_MODEL_PATH, out=LM_MODEL_PATH_OUT)
