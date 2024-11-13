@@ -187,10 +187,6 @@ mesh_vertex_array, mesh_vertex_count = test_dataset.generate_object_vertex_array
 
 print("testing data: {} batches".format(test_batches))
 
-if opt.backbonename != "resnet18":
-    print(opt.backbonename + " is not a supported backbone.")
-    exit()
-
 
 input_segmentation_shape = None
 if opt.train_vectors_with_ground_truth is True:

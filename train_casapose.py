@@ -299,10 +299,6 @@ if not opt.datatest == "":
     )
     tf.print("testing data: {} batches".format(test_batches))
 
-if opt.backbonename != "resnet18":
-    tf.print(opt.backbonename + " is not a supported backbone.")
-    exit()
-
 
 height = opt.imagesize[0]
 width = opt.imagesize[1]
@@ -504,7 +500,6 @@ def runnetwork(
     train=True,
     pose_validation=False,
 ):
-
     with mirrored_strategy.scope():
 
         # @tf.function
@@ -618,6 +613,7 @@ def runnetwork(
                             output_dirs,
                             confidence,
                         ]
+
                     coords = CoordLSVotingWeighted(
                         name="coords_ls_voting",
                         num_classes=no_objects,

@@ -34,7 +34,7 @@ def parse_config():
 
     parser.add_argument("--datameshes", default="", help="path to meshes from dataset")
     parser.add_argument("--modelname", default="casapose_cond_weighted", help="name of the model to use")
-    parser.add_argument("--backbonename", default="resnet18", help="name of the backbone to use (currently only resnet18)")
+    parser.add_argument("--backbonename", default="resnet18", help="name of the backbone to use")
     parser.add_argument("--train_validation_split", type=float, default=0.9, help="train validation split")
     parser.add_argument("--estimate_confidence", type=str2bool, default=False, help="netork estimates confidence map (adds no_points output maps)")
     parser.add_argument("--estimate_coords", type=str2bool, default=False, help="netork estimates coords via reprojection and bpnp")

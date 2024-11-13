@@ -3,7 +3,7 @@ import tensorflow as tf
 from .. import get_submodules_from_kwargs
 from ._normalization_layers import HalfSize, PartialConvolution
 from .casapose import casa_layer
-from .resnet import ResNet, ResNet18, get_conv_params
+from .resnet import ResNet, get_conv_params, get_backbone
 
 # -------------------------------------------------------------------------
 #  Pose Models
@@ -33,12 +33,9 @@ def CASAPoseConditional1(
     backend, layers, models, keras_utils = get_submodules_from_kwargs(kwargs)
 
     if backbone is None:
-        if base_model == "resnet18":
-            backbone = ResNet18(
-                input_shape=input_shape, input_tensor=input_tensor, weights=weights, include_top=False, **kwargs
-            )
-        else:
-            raise TypeError("Undefined base model type")
+        backbone = get_backbone(
+            base_model, input_shape=input_shape, input_tensor=input_tensor, weights=weights, **kwargs
+        )
 
     [x2s, x4s, x8s, x16s, x32s] = backbone(backbone.inputs[0])
 
@@ -154,12 +151,9 @@ def CASAPoseConditional2(
     backend, layers, models, keras_utils = get_submodules_from_kwargs(kwargs)
 
     if backbone is None:
-        if base_model == "resnet18":
-            backbone = ResNet18(
-                input_shape=input_shape, input_tensor=input_tensor, weights=weights, include_top=False, **kwargs
-            )
-        else:
-            raise TypeError("Undefined base model type")
+        backbone = get_backbone(
+            base_model, input_shape=input_shape, input_tensor=input_tensor, weights=weights, **kwargs
+        )
 
     [x2s, x4s, x8s, x16s, x32s] = backbone(backbone.inputs[0])
 
@@ -284,12 +278,9 @@ def CASAPoseConditional3(
     backend, layers, models, keras_utils = get_submodules_from_kwargs(kwargs)
 
     if backbone is None:
-        if base_model == "resnet18":
-            backbone = ResNet18(
-                input_shape=input_shape, input_tensor=input_tensor, weights=weights, include_top=False, **kwargs
-            )
-        else:
-            raise TypeError("Undefined base model type")
+        backbone = get_backbone(
+            base_model, input_shape=input_shape, input_tensor=input_tensor, weights=weights, **kwargs
+        )
 
     [x2s, x4s, x8s, x16s, x32s] = backbone(backbone.inputs[0])
 
@@ -414,12 +405,9 @@ def CASAPoseConditional4(
     backend, layers, models, keras_utils = get_submodules_from_kwargs(kwargs)
 
     if backbone is None:
-        if base_model == "resnet18":
-            backbone = ResNet18(
-                input_shape=input_shape, input_tensor=input_tensor, weights=weights, include_top=False, **kwargs
-            )
-        else:
-            raise TypeError("Undefined base model type")
+        backbone = get_backbone(
+            base_model, input_shape=input_shape, input_tensor=input_tensor, weights=weights, **kwargs
+        )
 
     [x2s, x4s, x8s, x16s, x32s] = backbone(backbone.inputs[0])
 
@@ -544,12 +532,9 @@ def CASAPoseConditional5(
     backend, layers, models, keras_utils = get_submodules_from_kwargs(kwargs)
 
     if backbone is None:
-        if base_model == "resnet18":
-            backbone = ResNet18(
-                input_shape=input_shape, input_tensor=input_tensor, weights=weights, include_top=False, **kwargs
-            )
-        else:
-            raise TypeError("Undefined base model type")
+        backbone = get_backbone(
+            base_model, input_shape=input_shape, input_tensor=input_tensor, weights=weights, **kwargs
+        )
 
     [x2s, x4s, x8s, x16s, x32s] = backbone(backbone.inputs[0])
 
@@ -559,7 +544,6 @@ def CASAPoseConditional5(
     x = casa_layer(layers.concatenate([x, x2s], 3), "4", s2dim, leaky=True, upsampling=True)
     x = casa_layer(layers.concatenate([x, backbone.inputs[0]], 3), "5", raw_dim, leaky=True)
     x = layers.Conv2D(seg_dim, (1, 1), strides=(1, 1), name="pv_final_conv_segmentation", **get_conv_params())(x)
-
     beta = tf.cast(1e6, dtype=x.dtype)  # 10
     if input_segmentation_shape is None:
         x_mask = layers.Activation("softmax")(x * beta)
@@ -679,12 +663,9 @@ def PVNet(
     backend, layers, models, keras_utils = get_submodules_from_kwargs(kwargs)
 
     if backbone is None:
-        if base_model == "resnet18":
-            backbone = ResNet18(
-                input_shape=input_shape, input_tensor=input_tensor, weights=weights, include_top=False, **kwargs
-            )
-        else:
-            raise TypeError("Undefined base model type")
+        backbone = get_backbone(
+            base_model, input_shape=input_shape, input_tensor=input_tensor, weights=weights, **kwargs
+        )
 
     [x2s, x4s, x8s, x16s, x32s] = backbone(backbone.inputs[0])
 
@@ -737,12 +718,9 @@ def CASAPoseConditional6(
     backend, layers, models, keras_utils = get_submodules_from_kwargs(kwargs)
 
     if backbone is None:
-        if base_model == "resnet18":
-            backbone = ResNet18(
-                input_shape=input_shape, input_tensor=input_tensor, weights=weights, include_top=False, **kwargs
-            )
-        else:
-            raise TypeError("Undefined base model type")
+        backbone = get_backbone(
+            base_model, input_shape=input_shape, input_tensor=input_tensor, weights=weights, **kwargs
+        )
 
     [x2s, x4s, x8s, x16s, x32s] = backbone(backbone.inputs[0])
 
@@ -883,12 +861,9 @@ def CASAPoseConditional7(
     backend, layers, models, keras_utils = get_submodules_from_kwargs(kwargs)
 
     if backbone is None:
-        if base_model == "resnet18":
-            backbone = ResNet18(
-                input_shape=input_shape, input_tensor=input_tensor, weights=weights, include_top=False, **kwargs
-            )
-        else:
-            raise TypeError("Undefined base model type")
+        backbone = get_backbone(
+            base_model, input_shape=input_shape, input_tensor=input_tensor, weights=weights, **kwargs
+        )
 
     [x2s, x4s, x8s, x16s, x32s] = backbone(backbone.inputs[0])
 
@@ -1016,12 +991,9 @@ def CASAPoseConditional8(
     backend, layers, models, keras_utils = get_submodules_from_kwargs(kwargs)
 
     if backbone is None:
-        if base_model == "resnet18":
-            backbone = ResNet18(
-                input_shape=input_shape, input_tensor=input_tensor, weights=weights, include_top=False, **kwargs
-            )
-        else:
-            raise TypeError("Undefined base model type")
+        backbone = get_backbone(
+            base_model, input_shape=input_shape, input_tensor=input_tensor, weights=weights, **kwargs
+        )
 
     [x2s, x4s, x8s, x16s, x32s] = backbone(backbone.inputs[0])
 
@@ -1149,12 +1121,9 @@ def CASAPoseConditional9(
     backend, layers, models, keras_utils = get_submodules_from_kwargs(kwargs)
 
     if backbone is None:
-        if base_model == "resnet18":
-            backbone = ResNet18(
-                input_shape=input_shape, input_tensor=input_tensor, weights=weights, include_top=False, **kwargs
-            )
-        else:
-            raise TypeError("Undefined base model type")
+        backbone = get_backbone(
+            base_model, input_shape=input_shape, input_tensor=input_tensor, weights=weights, **kwargs
+        )
 
     [x2s, x4s, x8s, x16s, x32s] = backbone(backbone.inputs[0])
 
@@ -1282,12 +1251,9 @@ def CASAPoseConditional10(
     backend, layers, models, keras_utils = get_submodules_from_kwargs(kwargs)
 
     if backbone is None:
-        if base_model == "resnet18":
-            backbone = ResNet18(
-                input_shape=input_shape, input_tensor=input_tensor, weights=weights, include_top=False, **kwargs
-            )
-        else:
-            raise TypeError("Undefined base model type")
+        backbone = get_backbone(
+            base_model, input_shape=input_shape, input_tensor=input_tensor, weights=weights, **kwargs
+        )
 
     [x2s, x4s, x8s, x16s, x32s] = backbone(backbone.inputs[0])
 
@@ -1399,11 +1365,11 @@ def CASAPoseConditional10(
     return model
 
 
-setattr(ResNet18, "__doc__", ResNet.__doc__)
+# setattr(ResNet18, "__doc__", ResNet.__doc__)
 # setattr(ResNet34, "__doc__", ResNet.__doc__)
-# setattr(ResNet50, '__doc__', ResNet.__doc__)
-# setattr(ResNet101, '__doc__', ResNet.__doc__)
-# setattr(ResNet152, '__doc__', ResNet.__doc__)
+# setattr(ResNet50, "__doc__", ResNet.__doc__)
+# setattr(ResNet101, "__doc__", ResNet.__doc__)
+# setattr(ResNet152, "__doc__", ResNet.__doc__)
 setattr(PVNet, "__doc__", ResNet.__doc__)
 setattr(CASAPoseConditional1, "__doc__", ResNet.__doc__)
 setattr(CASAPoseConditional2, "__doc__", ResNet.__doc__)

@@ -13,7 +13,7 @@ from ._normalization_layers import (
     HalfSize,
     PartialConvolution,
 )
-from .resnet import ResNet, ResNet18, get_bn_params, get_conv_params
+from .resnet import ResNet, get_bn_params, get_conv_params, get_backbone
 
 DecoderParams = collections.namedtuple(
     "DecoderParams",
@@ -166,12 +166,9 @@ def CASAPose(
     backend, layers, models, keras_utils = get_submodules_from_kwargs(kwargs)
 
     if backbone is None:
-        if base_model == "resnet18":
-            backbone = ResNet18(
-                input_shape=input_shape, input_tensor=input_tensor, weights=weights, include_top=False, **kwargs
-            )
-        else:
-            raise TypeError("Undefined base model type")
+        backbone = get_backbone(
+            base_model, input_shape=input_shape, input_tensor=input_tensor, weights=weights, **kwargs
+        )
 
     [x2s, x4s, x8s, _, x32s] = backbone(backbone.inputs[0])
     backbone_features = [x32s, x8s, x4s, x2s, backbone.inputs[0]]

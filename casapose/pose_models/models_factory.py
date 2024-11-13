@@ -9,10 +9,10 @@ class ModelsFactory:
     _models = {
         # Backbones
         "resnet18": rn.ResNet18,
-        # 'resnet34': rn.ResNet34,
-        # 'resnet50': rn.ResNet50,
-        # 'resnet101': rn.ResNet101,
-        # 'resnet152': rn.ResNet152,
+        "resnet34": rn.ResNet34,
+        "resnet50": rn.ResNet50,
+        "resnet101": rn.ResNet101,
+        "resnet152": rn.ResNet152,
         # Paper
         "casapose_c": pm.CASAPoseConditional1,  # BMVC (C) # casapose_cond_weighted_dtwin
         "casapose_c_gu": pm.CASAPoseConditional2,  # BMVC  (C/GU: 0x partial conv, guided us) # casapose_cond_weighted_combined_split_decoder_9

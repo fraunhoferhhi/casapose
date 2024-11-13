@@ -113,7 +113,7 @@ def residual_conv_block(filters, stage, block, strides=(1, 1), dilation=(1, 1), 
     return layer
 
 
-def residual_bottleneck_block(filters, stage, block, strides=None, attention=None, cut="pre"):
+def residual_bottleneck_block(filters, stage, block, strides=(1, 1), dilation=(1, 1), attention=None, cut="pre"):
     """The identity block is the block that has no conv layer at shortcut.
     # Arguments
         input_tensor: input tensor
@@ -135,23 +135,29 @@ def residual_bottleneck_block(filters, stage, block, strides=None, attention=Non
         conv_name, bn_name, relu_name, sc_name = handle_block_names(stage, block)
 
         x = layers.experimental.SyncBatchNormalization(name=bn_name + "1", **bn_params)(input_tensor)
-        x = layers.Activation("relu", name=relu_name + "1")(x)
+        x2 = layers.Activation("relu", name=relu_name + "1")(x)
 
         # defining shortcut connection
         if cut == "pre":
             shortcut = input_tensor
         elif cut == "post":
-            shortcut = layers.Conv2D(filters * 4, (1, 1), name=sc_name, strides=strides, **conv_params)(x)
+            shortcut = layers.Conv2D(filters * 4, (1, 1), name=sc_name, strides=strides, **conv_params)(x2)
         else:
             raise ValueError('Cut type not in ["pre", "post"]')
+
+        ks = 3  # kernel_size
+        u_ks = (ks - 1) * (dilation[0] - 1) + ks  # updated_kernel_size
+        full_padding = int((u_ks - 1) / 2)
 
         # continue with convolution layers
         x = layers.Conv2D(filters, (1, 1), name=conv_name + "1", **conv_params)(x)
 
         x = layers.experimental.SyncBatchNormalization(name=bn_name + "2", **bn_params)(x)
         x = layers.Activation("relu", name=relu_name + "2")(x)
-        x = layers.ZeroPadding2D(padding=(1, 1))(x)
-        x = layers.Conv2D(filters, (3, 3), strides=strides, name=conv_name + "2", **conv_params)(x)
+        x = layers.ZeroPadding2D(padding=(full_padding, full_padding))(x)
+        x = layers.Conv2D(
+            filters, (ks, ks), strides=strides, dilation_rate=dilation, name=conv_name + "2", **conv_params
+        )(x)
 
         x = layers.experimental.SyncBatchNormalization(name=bn_name + "3", **bn_params)(x)
         x = layers.Activation("relu", name=relu_name + "3")(x)
@@ -164,7 +170,7 @@ def residual_bottleneck_block(filters, stage, block, strides=None, attention=Non
         # add residual connection
         x = layers.Add()([x, shortcut])
 
-        return x
+        return x, x2
 
     return layer
 
@@ -328,13 +334,41 @@ def ResNet(
 
 MODELS_PARAMS = {
     "resnet18": ModelParams("resnet18", (2, 2, 2, 2), residual_conv_block, None),
-    # "resnet34": ModelParams("resnet34", (3, 4, 6, 3), residual_conv_block, None),
-    # "resnet50": ModelParams("resnet50", (3, 4, 6, 3), residual_bottleneck_block, None),
-    # "resnet101": ModelParams("resnet101", (3, 4, 23, 3), residual_bottleneck_block, None),
-    # "resnet152": ModelParams("resnet152", (3, 8, 36, 3), residual_bottleneck_block, None),
+    "resnet34": ModelParams("resnet34", (3, 4, 6, 3), residual_conv_block, None),
+    "resnet50": ModelParams("resnet50", (3, 4, 6, 3), residual_bottleneck_block, None),
+    "resnet101": ModelParams("resnet101", (3, 4, 23, 3), residual_bottleneck_block, None),
+    "resnet152": ModelParams("resnet152", (3, 8, 36, 3), residual_bottleneck_block, None),
     # "seresnet18": ModelParams("seresnet18", (2, 2, 2, 2), residual_conv_block, ChannelSE),
     # "seresnet34": ModelParams("seresnet34", (3, 4, 6, 3), residual_conv_block, ChannelSE),
 }
+
+
+def get_backbone(base_model="resnet18", input_shape=None, input_tensor=None, weights="imagenet", **kwargs):
+
+    if base_model == "resnet18":
+        backbone = ResNet18(
+            input_shape=input_shape, input_tensor=input_tensor, weights=weights, include_top=False, **kwargs
+        )
+    elif base_model == "resnet34":
+        backbone = ResNet34(
+            input_shape=input_shape, input_tensor=input_tensor, weights=weights, include_top=False, **kwargs
+        )
+    elif base_model == "resnet50":
+        backbone = ResNet50(
+            input_shape=input_shape, input_tensor=input_tensor, weights=weights, include_top=False, **kwargs
+        )
+    elif base_model == "resnet101":
+        backbone = ResNet101(
+            input_shape=input_shape, input_tensor=input_tensor, weights=weights, include_top=False, **kwargs
+        )
+    elif base_model == "resnet152":
+        backbone = ResNet152(
+            input_shape=input_shape, input_tensor=input_tensor, weights=weights, include_top=False, **kwargs
+        )
+    else:
+        raise TypeError("Undefined base model type: {}".format(base_model))
+
+    return backbone
 
 
 def ResNet18(input_shape=None, input_tensor=None, weights=None, classes=1000, include_top=True, **kwargs):
@@ -349,49 +383,49 @@ def ResNet18(input_shape=None, input_tensor=None, weights=None, classes=1000, in
     )
 
 
-# def ResNet34(input_shape=None, input_tensor=None, weights=None, classes=1000, include_top=True, **kwargs):
-#     return ResNet(
-#         MODELS_PARAMS["resnet34"],
-#         input_shape=input_shape,
-#         input_tensor=input_tensor,
-#         include_top=include_top,
-#         classes=classes,
-#         weights=weights,
-#         **kwargs
-#     )
+def ResNet34(input_shape=None, input_tensor=None, weights=None, classes=1000, include_top=True, **kwargs):
+    return ResNet(
+        MODELS_PARAMS["resnet34"],
+        input_shape=input_shape,
+        input_tensor=input_tensor,
+        include_top=include_top,
+        classes=classes,
+        weights=weights,
+        **kwargs
+    )
 
 
-# def ResNet50(input_shape=None, input_tensor=None, weights=None, classes=1000, include_top=True, **kwargs):
-#     return ResNet(
-#         MODELS_PARAMS['resnet50'],
-#         input_shape=input_shape,
-#         input_tensor=input_tensor,
-#         include_top=include_top,
-#         classes=classes,
-#         weights=weights,
-#         **kwargs
-#     )
+def ResNet50(input_shape=None, input_tensor=None, weights=None, classes=1000, include_top=True, **kwargs):
+    return ResNet(
+        MODELS_PARAMS["resnet50"],
+        input_shape=input_shape,
+        input_tensor=input_tensor,
+        include_top=include_top,
+        classes=classes,
+        weights=weights,
+        **kwargs
+    )
 
 
-# def ResNet101(input_shape=None, input_tensor=None, weights=None, classes=1000, include_top=True, **kwargs):
-#     return ResNet(
-#         MODELS_PARAMS['resnet101'],
-#         input_shape=input_shape,
-#         input_tensor=input_tensor,
-#         include_top=include_top,
-#         classes=classes,
-#         weights=weights,
-#         **kwargs
-#     )
+def ResNet101(input_shape=None, input_tensor=None, weights=None, classes=1000, include_top=True, **kwargs):
+    return ResNet(
+        MODELS_PARAMS["resnet101"],
+        input_shape=input_shape,
+        input_tensor=input_tensor,
+        include_top=include_top,
+        classes=classes,
+        weights=weights,
+        **kwargs
+    )
 
 
-# def ResNet152(input_shape=None, input_tensor=None, weights=None, classes=1000, include_top=True, **kwargs):
-#     return ResNet(
-#         MODELS_PARAMS['resnet152'],
-#         input_shape=input_shape,
-#         input_tensor=input_tensor,
-#         include_top=include_top,
-#         classes=classes,
-#         weights=weights,
-#         **kwargs
-#     )
+def ResNet152(input_shape=None, input_tensor=None, weights=None, classes=1000, include_top=True, **kwargs):
+    return ResNet(
+        MODELS_PARAMS["resnet152"],
+        input_shape=input_shape,
+        input_tensor=input_tensor,
+        include_top=include_top,
+        classes=classes,
+        weights=weights,
+        **kwargs
+    )
